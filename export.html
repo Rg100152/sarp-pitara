@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="description" content="Export, import, back up and restore Sarp Pitara offline snakebite data.">
+  <title>Sarp Pitara · Backup &amp; Export</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="export.html">
+  <div id="hud"></div>
+
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Data Portability · Local Backup</div>
+        <h1 data-en="Backup, Export &amp; Sync" data-hi="बैकअप, एक्सपोर्ट और सिंक">Backup, Export &amp; Sync</h1>
+        <p data-en="The database lives in this browser. Export a signed JSON backup or a spreadsheet-ready CSV before clearing browser data or changing devices."
+           data-hi="डेटाबेस इस ब्राउज़र में रहता है। ब्राउज़र डेटा साफ़ करने या डिवाइस बदलने से पहले JSON बैकअप या CSV एक्सपोर्ट करें।">
+          The database lives in this browser. Export a signed JSON backup or a spreadsheet-ready CSV before clearing browser data or changing devices.
+        </p>
+      </div>
+      <div class="head-actions">
+        <button class="btn btn-sm" id="refreshBtn" type="button">↻ Refresh</button>
+        <a class="btn btn-sm btn-red" href="register-bite.html">＋ New Case</a>
+      </div>
+    </div>
+
+    <section class="grid grid-4">
+      <article class="card kpi"><div class="label">Total Records</div><div class="value mono" id="sTotal">0</div><div class="foot" id="sTotalFoot">IndexedDB incidents</div></article>
+      <article class="card kpi"><div class="label">Synced</div><div class="value mono" id="sSynced" style="color:#10b981">0</div><div class="foot">Acknowledged locally</div></article>
+      <article class="card kpi"><div class="label">Queued</div><div class="value mono" id="sQueued" style="color:#f59e0b">0</div><div class="foot">Awaiting export / sync</div></article>
+      <article class="card kpi"><div class="label">Outbox</div><div class="value mono" id="sOutbox">0</div><div class="foot">FIFO mutation queue</div></article>
+    </section>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      <section class="card">
+        <div class="card-title">
+          <div><h2>Export Data</h2><span class="hint">JSON BACKUP · CSV SPREADSHEET</span></div>
+          <span class="badge cyan">PORTABLE</span>
+        </div>
+        <p class="small muted">JSON preserves every field and can be re-imported. CSV is ready for Excel / Google Sheets / DHO reporting.</p>
+        <div class="row" style="margin-top:12px">
+          <button class="btn btn-primary" id="exportJson" type="button">⬇ Export JSON backup</button>
+          <button class="btn" id="exportCsv" type="button">⬇ Export CSV</button>
+        </div>
+        <div class="divider"></div>
+        <div class="spread small"><span class="muted">Last export</span><span class="mono" id="lastExport">Never</span></div>
+        <div class="spread small" style="margin-top:6px"><span class="muted">Browser storage used</span><span class="mono" id="storageUse">—</span></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">
+          <div><h2>Import / Restore</h2><span class="hint">MERGE OR REPLACE LOCAL DATA</span></div>
+          <span class="badge amber">CAREFUL</span>
+        </div>
+        <div class="field">
+          <label for="importFile">Select a Sarp Pitara JSON backup</label>
+          <input type="file" id="importFile" accept="application/json,.json">
+          <span class="help">Merge keeps existing records and adds or overwrites matching case IDs.</span>
+        </div>
+        <label class="check" for="replaceMode" style="margin-top:10px">
+          <input type="checkbox" id="replaceMode">
+          <span>Replace all local records before importing (destructive)</span>
+        </label>
+        <button class="btn btn-block" id="importBtn" type="button" style="margin-top:12px" disabled>⬆ Import backup</button>
+        <p class="small muted" style="margin:10px 0 0">Always export a backup before importing in replace mode.</p>
+      </section>
+
+      <section class="card">
+        <div class="card-title">
+          <div><h2>Offline Sync Queue</h2><span class="hint">LOCAL ACK · NO BACKEND REQUIRED</span></div>
+          <span class="badge green" id="netBadge">ONLINE</span>
+        </div>
+        <p class="small muted">This build is 100% frontend-only. “Sync” acknowledges queued records locally and marks them synced. Use the JSON/CSV export as the portable sync channel between devices.</p>
+        <div class="row" style="margin-top:12px">
+          <button class="btn btn-green" id="syncNow" type="button">⇅ Sync queue now</button>
+          <button class="btn btn-ghost" id="clearOutbox" type="button">Clear outbox</button>
+        </div>
+        <div class="divider"></div>
+        <div class="spread small"><span class="muted">Pending mutations</span><span class="mono" id="outboxCount">0</span></div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">
+          <div><h2>Sample Data</h2><span class="hint">DEMO / TRAINING MODE</span></div>
+          <span class="badge violet">SAFE</span>
+        </div>
+        <p class="small muted">Load 120 synthetic incidents across Jaunpur tehsils to explore the dashboard, charts and referral flow. Demo records are clearly named and can be deleted individually.</p>
+        <button class="btn btn-block" id="loadDemo" type="button" style="margin-top:12px">Load 120 sample incidents</button>
+        <p class="small muted" style="margin:10px 0 0">Demo data is written to IndexedDB just like real records. Do not mix it with live surveillance data.</p>
+      </section>
+    </div>
+
+    <section class="card card-accent-red" style="margin-top:16px">
+      <div class="card-title">
+        <div><h2>Danger Zone</h2><span class="hint">IRREVERSIBLE LOCAL DELETION</span></div>
+        <span class="badge red">DESTRUCTIVE</span>
+      </div>
+      <div class="spread" style="gap:16px;flex-wrap:wrap">
+        <p class="small muted" style="max-width:560px;margin:0">Clearing incidents removes all case records from this browser. Facility seed data is preserved. Export a backup first.</p>
+        <button class="btn btn-red" id="wipeAll" type="button">Delete all incidents</button>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <div class="card-title"><div><h2>Dataset Snapshot</h2><span class="hint">SPECIES · SEVERITY · OUTCOME</span></div></div>
+      <div class="grid grid-3">
+        <div><div class="field-label" style="margin-bottom:8px">Species</div><div id="snapSpecies"></div></div>
+        <div><div class="field-label" style="margin-bottom:8px">Severity</div><div id="snapSeverity"></div></div>
+        <div><div class="field-label" style="margin-bottom:8px">Outcome</div><div id="snapOutcome"></div></div>
+      </div>
+    </section>
+
+    <p class="footer-note">Sarp Pitara · Your data belongs to you. Nothing is uploaded anywhere.</p>
+  </main>
+
+  <script src="js/app.js" defer></script>
+  <script src="js/db.js" defer></script>
+  <script src="js/sync.js" defer></script>
+  <script src="js/export.js" defer></script>
+</body>
+</html>

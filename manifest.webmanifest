@@ -1,0 +1,64 @@
+{
+  "name": "Sarp Pitara — Snakebite Surveillance",
+  "short_name": "Sarp Pitara",
+  "description": "Offline-first snakebite surveillance, triage, ASV stock locator and first-aid guide for Jaunpur district.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0b0f17",
+  "theme_color": "#0b0f17",
+  "categories": ["medical", "health", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Register a bite",
+      "short_name": "Register",
+      "description": "Start a new snakebite case intake",
+      "url": "./register-bite.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "ASV locator",
+      "short_name": "ASV",
+      "description": "Find anti-snake venom stock nearby",
+      "url": "./asv-locator.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Snake guide",
+      "short_name": "Guide",
+      "description": "Identify the Big Four and learn first aid",
+      "url": "./snakes.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

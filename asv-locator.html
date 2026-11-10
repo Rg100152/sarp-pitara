@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="description" content="Live anti-snake venom stock and emergency facility locator for Jaunpur district.">
+  <title>Sarp Pitara · ASV Locator</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="asv-locator.html">
+  <div id="hud"></div>
+
+  <main class="page">
+    <div class="page-head no-print">
+      <div>
+        <div class="eyebrow">Emergency Facility &amp; Antivenom Logistics</div>
+        <h1 data-en="ASV Stock Locator" data-hi="ASV स्टॉक लोकेटर">ASV Stock Locator</h1>
+        <p data-en="Find the nearest facility with polyvalent anti-snake venom, ventilators and blood bank support. Stock data is a local seed — verify by phone before transport."
+           data-hi="निकटतम ASV, वेंटिलेटर और ब्लड बैंक सुविधा खोजें। स्टॉक स्थानीय सीड डेटा है — भेजने से पहले फोन से पुष्टि करें।">
+          Find the nearest facility with polyvalent anti-snake venom, ventilators and blood bank support. Stock data is a local seed — verify by phone before transport.
+        </p>
+      </div>
+      <div class="head-actions">
+        <a class="btn btn-sm btn-red" href="tel:108">🚑 Call 108</a>
+        <button class="btn btn-sm" id="gpsLocateBtn" type="button">📍 Use my location</button>
+      </div>
+    </div>
+
+    <div class="banner amber" style="margin-bottom:16px">
+      <span class="ico">⚠</span>
+      <div><strong>Golden hour:</strong> do not delay transport to check stock. Call the facility while moving. ASV is the only definitive antidote.</div>
+    </div>
+
+    <section class="card no-print" style="margin-bottom:16px">
+      <div class="form-grid" style="grid-template-columns:1.2fr 1.2fr 1fr 1fr">
+        <div class="field">
+          <label for="search">Search facility</label>
+          <input id="search" type="search" placeholder="Hospital, CHC, address…">
+        </div>
+        <div class="field">
+          <label for="fTehsil">Tehsil</label>
+          <select id="fTehsil"><option value="">All tehsils</option></select>
+        </div>
+        <div class="field">
+          <label for="fType">Facility type</label>
+          <select id="fType"><option value="">All types</option></select>
+        </div>
+        <div class="field">
+          <label for="sortBy">Sort by</label>
+          <select id="sortBy">
+            <option value="distance">Nearest first</option>
+            <option value="stock">Highest stock</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;gap:8px">
+        <label class="check" style="padding:7px 10px"><input type="checkbox" id="fVent"> <span>Ventilator</span></label>
+        <label class="check" style="padding:7px 10px"><input type="checkbox" id="fBlood"> <span>Blood bank</span></label>
+        <label class="check" style="padding:7px 10px"><input type="checkbox" id="f24"> <span>24×7</span></label>
+        <label class="check" style="padding:7px 10px"><input type="checkbox" id="fStock"> <span>Stock ≥ 20 vials</span></label>
+        <button class="btn btn-sm btn-ghost" id="clearFilters" type="button" style="margin-left:auto">Clear</button>
+      </div>
+    </section>
+
+    <div class="grid grid-main">
+      <div class="stack">
+        <article class="card">
+          <div class="card-title">
+            <div>
+              <h2 data-en="Facility Map" data-hi="सुविधा मैप">Facility Map</h2>
+              <span class="hint">SCHEMATIC · CLICK NODE TO CALL</span>
+            </div>
+            <span class="badge red" id="lowBadge">—</span>
+          </div>
+          <div class="map-box" id="facilityMap" style="min-height:400px"></div>
+        </article>
+
+        <div class="grid grid-4" id="locStats">
+          <article class="card kpi"><div class="label">Total ASV Stock</div><div class="value mono" id="statStock">—</div><div class="foot">Vials across facilities</div></article>
+          <article class="card kpi"><div class="label">Facilities</div><div class="value mono" id="statFacilities">—</div><div class="foot">Matching filters</div></article>
+          <article class="card kpi"><div class="label">Low Stock</div><div class="value mono" id="statLow" style="color:#ef4444">—</div><div class="foot">&lt; 20 vials</div></article>
+          <article class="card kpi"><div class="label">Nearest</div><div class="value mono" id="statNearest" style="font-size:1.15rem">—</div><div class="foot" id="statNearestFoot">Set location</div></article>
+        </div>
+
+        <div id="facilityList" class="grid grid-2"></div>
+        <div id="noFacilities" class="card empty" style="display:none">
+          <div class="big">🏥</div>
+          <h3>No facilities match</h3>
+          <p class="muted">Clear filters or search a different tehsil.</p>
+        </div>
+      </div>
+
+      <aside class="stack" style="position:sticky;top:84px">
+        <article class="card card-accent-red">
+          <div class="card-title"><h3>Emergency Protocol</h3></div>
+          <ol class="small muted" style="margin:0;padding-left:18px">
+            <li>Immobilise the bitten limb like a fracture; remove rings/tight items.</li>
+            <li>Keep the patient calm and lying down. Do not let them walk.</li>
+            <li>Call 108 and transport to the nearest ASV facility.</li>
+            <li>Perform 20WBCT on arrival; start ASV if indicated.</li>
+            <li>Monitor for anaphylaxis during infusion.</li>
+          </ol>
+        </article>
+        <article class="card">
+          <div class="card-title"><h3>Facility Tiers</h3></div>
+          <div class="stack" style="gap:8px">
+            <div class="spread small"><span><span class="badge green">CHC</span> First response</span><span class="muted">20WBCT + initial ASV</span></div>
+            <div class="spread small"><span><span class="badge amber">Trauma</span> Stabilisation</span><span class="muted">Ventilator / referral</span></div>
+            <div class="spread small"><span><span class="badge red">Apex</span> ICU / dialysis</span><span class="muted">District hospital / medical college</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-title"><h3>Stock Status</h3></div>
+          <div class="stack" style="gap:9px">
+            <div class="spread small"><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#10b981;margin-right:6px"></i>Sufficient</span><span class="muted">≥ 20 vials</span></div>
+            <div class="spread small"><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#f59e0b;margin-right:6px"></i>Limited</span><span class="muted">10–19 vials</span></div>
+            <div class="spread small"><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#ef4444;margin-right:6px"></i>Critical</span><span class="muted">&lt; 10 vials</span></div>
+          </div>
+        </article>
+      </aside>
+    </div>
+
+    <p class="footer-note no-print">Sarp Pitara · Facility and stock data are seeded locally for Jaunpur district · Verify by phone before transport.</p>
+  </main>
+
+  <script src="js/app.js" defer></script>
+  <script src="js/db.js" defer></script>
+  <script src="js/locator.js" defer></script>
+</body>
+</html>

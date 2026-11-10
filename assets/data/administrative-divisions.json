@@ -1,0 +1,61 @@
+{
+  "country": "India",
+  "state": "Uttar Pradesh",
+  "state_code": "UP",
+  "divisions": [
+    { "name": "Agra", "districts": ["Agra", "Firozabad", "Mainpuri", "Mathura"] },
+    { "name": "Aligarh", "districts": ["Aligarh", "Etah", "Hathras", "Kasganj"] },
+    { "name": "Ayodhya", "districts": ["Ambedkar Nagar", "Amethi", "Ayodhya", "Barabanki", "Sultanpur"] },
+    { "name": "Azamgarh", "districts": ["Azamgarh", "Ballia", "Mau"] },
+    { "name": "Bareilly", "districts": ["Badaun", "Bareilly", "Pilibhit", "Shahjahanpur"] },
+    { "name": "Basti", "districts": ["Basti", "Sant Kabir Nagar", "Siddharthnagar"] },
+    { "name": "Chitrakoot", "districts": ["Banda", "Chitrakoot", "Hamirpur", "Mahoba"] },
+    { "name": "Devipatan", "districts": ["Bahraich", "Balrampur", "Gonda", "Shravasti"] },
+    { "name": "Gorakhpur", "districts": ["Deoria", "Gorakhpur", "Kushinagar", "Maharajganj"] },
+    { "name": "Jhansi", "districts": ["Jalaun", "Jhansi", "Lalitpur"] },
+    { "name": "Kanpur", "districts": ["Auraiya", "Etawah", "Farrukhabad", "Kannauj", "Kanpur Dehat", "Kanpur Nagar"] },
+    { "name": "Lucknow", "districts": ["Hardoi", "Lakhimpur Kheri", "Lucknow", "Rae Bareli", "Sitapur", "Unnao"] },
+    { "name": "Meerut", "districts": ["Baghpat", "Bulandshahr", "Gautam Buddha Nagar", "Ghaziabad", "Hapur", "Meerut"] },
+    { "name": "Mirzapur", "districts": ["Bhadohi", "Mirzapur", "Sonbhadra"] },
+    { "name": "Moradabad", "districts": ["Amroha", "Bijnor", "Moradabad", "Rampur", "Sambhal"] },
+    { "name": "Prayagraj", "districts": ["Fatehpur", "Kaushambi", "Pratapgarh", "Prayagraj"] },
+    { "name": "Saharanpur", "districts": ["Muzaffarnagar", "Saharanpur", "Shamli"] },
+    { "name": "Varanasi", "districts": ["Chandauli", "Ghazipur", "Jaunpur", "Varanasi"] }
+  ],
+  "districts": [
+    "Agra", "Aligarh", "Ambedkar Nagar", "Amethi", "Amroha", "Auraiya", "Ayodhya",
+    "Azamgarh", "Badaun", "Baghpat", "Bahraich", "Ballia", "Balrampur", "Banda",
+    "Barabanki", "Bareilly", "Basti", "Bhadohi", "Bijnor", "Bulandshahr", "Chandauli",
+    "Chitrakoot", "Deoria", "Etah", "Etawah", "Farrukhabad", "Fatehpur", "Firozabad",
+    "Gautam Buddha Nagar", "Ghaziabad", "Ghazipur", "Gonda", "Gorakhpur", "Hamirpur",
+    "Hapur", "Hardoi", "Hathras", "Jalaun", "Jaunpur", "Jhansi", "Kannauj",
+    "Kanpur Dehat", "Kanpur Nagar", "Kasganj", "Kaushambi", "Kushinagar",
+    "Lakhimpur Kheri", "Lalitpur", "Lucknow", "Maharajganj", "Mahoba", "Mainpuri",
+    "Mathura", "Mau", "Meerut", "Mirzapur", "Moradabad", "Muzaffarnagar", "Pilibhit",
+    "Pratapgarh", "Prayagraj", "Rae Bareli", "Rampur", "Saharanpur", "Sambhal",
+    "Sant Kabir Nagar", "Shahjahanpur", "Shamli", "Shravasti", "Siddharthnagar",
+    "Sitapur", "Sonbhadra", "Sultanpur", "Unnao", "Varanasi"
+  ],
+  "jaunpur": {
+    "district": "Jaunpur",
+    "district_code": "UP-JNP",
+    "tehsils": [
+      { "id": "JNP-SDR", "name": "Sadar", "hindi_name": "सदर", "lat": 25.7464, "lng": 82.6837 },
+      { "id": "JNP-SHG", "name": "Shahganj", "hindi_name": "शाहगंज", "lat": 26.0481, "lng": 82.6833 },
+      { "id": "JNP-BDL", "name": "Badlapur", "hindi_name": "बदलापुर", "lat": 25.9723, "lng": 82.4682 },
+      { "id": "JNP-MCH", "name": "Machhlishahr", "hindi_name": "मछलीशहर", "lat": 25.6798, "lng": 82.4187 },
+      { "id": "JNP-MRH", "name": "Mariahu", "hindi_name": "मड़ियाहू", "lat": 25.6032, "lng": 82.6033 },
+      { "id": "JNP-KRK", "name": "Kerakat", "hindi_name": "केराकत", "lat": 25.6399, "lng": 82.9231 }
+    ],
+    "blocks": [
+      { "tehsil": "Sadar", "names": ["Karanjakala", "Sikrara", "Sirkoni", "Dharmapur"] },
+      { "tehsil": "Shahganj", "names": ["Suitha Kala", "Sondhi", "Khutahan"] },
+      { "tehsil": "Badlapur", "names": ["Badlapur", "Baksha", "Maharajganj"] },
+      { "tehsil": "Machhlishahr", "names": ["Machhlishahr", "Mungra Badshahpur", "Sujanganj", "Barsathi"] },
+      { "tehsil": "Mariahu", "names": ["Mariahu", "Ramnagar", "Rampur"] },
+      { "tehsil": "Kerakat", "names": ["Kerakat", "Jalalpur", "Dobhi", "Muftiganj"] }
+    ],
+    "total_villages": 3442,
+    "data_source": "https://jaunpur.nic.in/village-panchayats/"
+  }
+}

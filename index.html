@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="description" content="Sarp Pitara — offline-first snakebite surveillance and emergency ASV locator for Jaunpur district, Uttar Pradesh.">
+  <title>Sarp Pitara · District Command Dashboard</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="index.html">
+  <div id="hud"></div>
+
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">District Surveillance · Jaunpur Division</div>
+        <h1 data-en="Snakebite Command Dashboard" data-hi="सर्पदंश कमांड डैशबोर्ड">Snakebite Command Dashboard</h1>
+        <p data-en="Offline-first epidemiological telemetry, venom triage and anti-venom logistics across the Jaunpur health network."
+           data-hi="जौनपुर स्वास्थ्य नेटवर्क में ऑफलाइन-फर्स्ट सर्पदंश निगरानी, विष ट्रायज और एंटी-वेनम लॉजिस्टिक्स।">
+          Offline-first epidemiological telemetry, venom triage and anti-venom logistics across the Jaunpur health network.
+        </p>
+      </div>
+      <div class="head-actions">
+        <button class="btn btn-sm" id="refreshBtn" type="button">↻ <span data-en="Refresh" data-hi="रिफ्रेश">Refresh</span></button>
+        <a class="btn btn-sm btn-red" href="register-bite.html">＋ <span data-en="Register Case" data-hi="केस दर्ज करें">Register Case</span></a>
+      </div>
+    </div>
+
+    <section class="grid grid-4" aria-label="Headline metrics">
+      <article class="card kpi">
+        <div class="label"><span data-en="Total Bites (YTD)" data-hi="कुल मामले (वर्ष)">Total Bites (YTD)</span><span class="kpi-icon">🐍</span></div>
+        <div class="value mono" id="kpi-total">0</div>
+        <div class="foot" id="kpi-total-foot">No incidents recorded</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="Active / Hospitalised" data-hi="सक्रिय / भर्ती">Active / Hospitalised</span><span class="kpi-icon">🏥</span></div>
+        <div class="value mono" id="kpi-active">0</div>
+        <div class="foot warn" id="kpi-active-foot">0 critical</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="Recovered / Discharged" data-hi="स्वस्थ / डिस्चार्ज">Recovered / Discharged</span><span class="kpi-icon">✓</span></div>
+        <div class="value mono" id="kpi-recovered">0</div>
+        <div class="foot ok" id="kpi-recovered-foot">0% recovery</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="Fatalities" data-hi="मृत्यु">Fatalities</span><span class="kpi-icon">☠</span></div>
+        <div class="value mono" id="kpi-fatal">0</div>
+        <div class="foot up" id="kpi-fatal-foot">0% fatality rate</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="ASV Vials Administered" data-hi="ASV शीशियाँ">ASV Vials Administered</span><span class="kpi-icon">💉</span></div>
+        <div class="value mono" id="kpi-asv">0</div>
+        <div class="foot" id="kpi-asv-foot">District consumption</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="Avg. Time to Treatment" data-hi="औसत उपचार समय">Avg. Time to Treatment</span><span class="kpi-icon">⏱</span></div>
+        <div class="value mono" id="kpi-delay">—</div>
+        <div class="foot" id="kpi-delay-foot">Golden hour tracking</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="Venomous Ratio" data-hi="जहरीले अनुपात">Venomous Ratio</span><span class="kpi-icon">⚗</span></div>
+        <div class="value mono" id="kpi-venom">0%</div>
+        <div class="foot" id="kpi-venom-foot">Of identified cases</div>
+      </article>
+      <article class="card kpi">
+        <div class="label"><span data-en="Sync Queue" data-hi="सिंक क्यू">Sync Queue</span><span class="kpi-icon">⇅</span></div>
+        <div class="value mono" id="kpi-queue">0</div>
+        <div class="foot" id="kpi-queue-foot">Local records pending</div>
+      </article>
+    </section>
+
+    <div class="grid grid-main" style="margin-top:16px">
+      <div class="stack">
+        <article class="card">
+          <div class="card-title">
+            <div>
+              <h2 data-en="Incident Trend" data-hi="घटना रुझान">Incident Trend</h2>
+              <span class="hint">MONTHLY REPORTED BITES · LAST 12 MONTHS</span>
+            </div>
+            <span class="badge cyan" id="trendBadge">0 THIS MONTH</span>
+          </div>
+          <div class="chart-box"><canvas id="trendChart" aria-label="Monthly incident trend"></canvas></div>
+        </article>
+
+        <div class="grid grid-2">
+          <article class="card">
+            <div class="card-title">
+              <div>
+                <h3 data-en="Species Distribution" data-hi="प्रजाति वितरण">Species Distribution</h3>
+                <span class="hint">THE BIG FOUR &amp; MIMICS</span>
+              </div>
+            </div>
+            <div class="chart-box"><canvas id="speciesChart" aria-label="Species distribution"></canvas></div>
+            <div class="legend" id="speciesLegend"></div>
+          </article>
+          <article class="card">
+            <div class="card-title">
+              <div>
+                <h3 data-en="Venom Class" data-hi="विष वर्ग">Venom Class</h3>
+                <span class="hint">NEUROTOXIC VS HEMOTOXIC</span>
+              </div>
+            </div>
+            <div class="chart-box"><canvas id="venomChart" aria-label="Venom class distribution"></canvas></div>
+            <div class="legend" id="venomLegend"></div>
+          </article>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card">
+            <div class="card-title">
+              <div>
+                <h3 data-en="Time of Bite" data-hi="काटने का समय">Time of Bite</h3>
+                <span class="hint">24-HOUR DISTRIBUTION</span>
+              </div>
+            </div>
+            <div class="chart-box"><canvas id="timeChart" aria-label="Time of bite distribution"></canvas></div>
+          </article>
+          <article class="card">
+            <div class="card-title">
+              <div>
+                <h3 data-en="Age Groups" data-hi="आयु वर्ग">Age Groups</h3>
+                <span class="hint">DEMOGRAPHIC BREAKDOWN</span>
+              </div>
+            </div>
+            <div id="ageBars" style="margin-top:6px"></div>
+            <div class="divider"></div>
+            <div class="stat-inline" id="genderStats"></div>
+          </article>
+        </div>
+
+        <article class="card">
+          <div class="card-title">
+            <div>
+              <h3 data-en="Jaunpur Tehsil Heatmap" data-hi="जौनपुर तहसील हीटमैप">Jaunpur Tehsil Heatmap</h3>
+              <span class="hint">INCIDENT CLUSTERS · SCHEMATIC GEO MAP</span>
+            </div>
+            <span class="badge amber" id="hotTehsil">—</span>
+          </div>
+          <div class="map-box" id="tehsilMap" style="min-height:340px"></div>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="card">
+          <div class="card-title">
+            <div>
+              <h2 data-en="Live Incident Stream" data-hi="लाइव घटना स्ट्रीम">Live Incident Stream</h2>
+              <span class="hint">MOST RECENT RECORDS</span>
+            </div>
+            <span class="status-dot recording" style="padding:5px 9px"><i></i>LIVE</span>
+          </div>
+          <div class="stream" id="stream"></div>
+          <a class="btn btn-sm btn-block" href="case-directory.html" style="margin-top:12px">View all cases →</a>
+        </article>
+
+        <article class="card">
+          <div class="card-title">
+            <div>
+              <h2 data-en="Regional ASV Stock Radar" data-hi="क्षेत्रीय ASV स्टॉक">Regional ASV Stock Radar</h2>
+              <span class="hint">FACILITY INVENTORY · LIVE SEED DATA</span>
+            </div>
+            <span class="badge red" id="stockAlert">—</span>
+          </div>
+          <div id="asvRadar" class="stack" style="gap:9px"></div>
+          <a class="btn btn-sm btn-block" href="asv-locator.html" style="margin-top:12px">Open ASV locator →</a>
+        </article>
+
+        <article class="card card-accent-red">
+          <div class="card-title"><h3>⚠ Golden Hour Protocol</h3></div>
+          <p class="small muted" style="margin-bottom:10px">The only evidence-based antidote is polyvalent ASV. Do not cut, suck, or apply a tight tourniquet.</p>
+          <div class="row" style="gap:8px">
+            <a class="btn btn-sm btn-red" href="tel:108">🚑 Call 108</a>
+            <a class="btn btn-sm" href="snakes.html#firstaid">First Aid →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div id="emptyState" class="card" style="margin-top:16px;display:none">
+      <div class="empty">
+        <div class="big">🐍</div>
+        <h3>No incidents recorded yet</h3>
+        <p class="muted">Register a case to start building the district surveillance dataset, or load sample data to explore the analytics.</p>
+        <div class="row" style="justify-content:center;margin-top:12px">
+          <a class="btn btn-red" href="register-bite.html">＋ Register first case</a>
+          <button class="btn" id="loadDemoBtn" type="button">Load sample data</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer-note">Sarp Pitara · Frontend-only PWA · Data stays on this device in IndexedDB · Clinical decision support, not a substitute for institutional protocol.</p>
+  </main>
+
+  <script src="js/app.js" defer></script>
+  <script src="js/db.js" defer></script>
+  <script src="js/triage.js" defer></script>
+  <script src="js/charts.js" defer></script>
+  <script src="js/sync.js" defer></script>
+  <script src="js/dashboard.js" defer></script>
+</body>
+</html>

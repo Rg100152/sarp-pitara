@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="description" content="Search, filter and manage snakebite incident records stored offline in Sarp Pitara.">
+  <title>Sarp Pitara · Case Directory</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="case-directory.html">
+  <div id="hud"></div>
+
+  <main class="page">
+    <div class="page-head no-print">
+      <div>
+        <div class="eyebrow">Local Incident Repository · IndexedDB</div>
+        <h1 data-en="Case Directory" data-hi="केस सूची">Case Directory</h1>
+        <p data-en="Every record is stored on this device. Search, filter, print referral slips or export the dataset."
+           data-hi="हर रिकॉर्ड इस डिवाइस पर सुरक्षित है। खोजें, फ़िल्टर करें, रेफरल स्लिप प्रिंट करें या डेटा एक्सपोर्ट करें।">
+          Every record is stored on this device. Search, filter, print referral slips or export the dataset.
+        </p>
+      </div>
+      <div class="head-actions">
+        <button class="btn btn-sm" id="exportCsvBtn" type="button">⬇ CSV</button>
+        <a class="btn btn-sm btn-red" href="register-bite.html">＋ New Case</a>
+      </div>
+    </div>
+
+    <section class="card no-print" style="margin-bottom:16px">
+      <div class="form-grid" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr">
+        <div class="field">
+          <label for="search">Search</label>
+          <input id="search" type="search" placeholder="Case no, name, village, species…">
+        </div>
+        <div class="field">
+          <label for="fTehsil">Tehsil</label>
+          <select id="fTehsil"><option value="">All tehsils</option></select>
+        </div>
+        <div class="field">
+          <label for="fSpecies">Species</label>
+          <select id="fSpecies"><option value="">All species</option></select>
+        </div>
+        <div class="field">
+          <label for="fSeverity">Severity</label>
+          <select id="fSeverity">
+            <option value="">All severities</option>
+            <option>Asymptomatic</option><option>Mild</option><option>Moderate</option><option>Severe</option><option>Fatal</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fOutcome">Outcome</label>
+          <select id="fOutcome">
+            <option value="">All outcomes</option>
+            <option value="Admitted">Admitted</option>
+            <option value="Under Observation">Under Observation</option>
+            <option value="Referred">Referred</option>
+            <option value="Discharged_Recovered">Discharged / Recovered</option>
+            <option value="Left_Against_Medical_Advice">Left against advice</option>
+            <option value="Deceased">Deceased</option>
+          </select>
+        </div>
+      </div>
+      <div class="spread" style="margin-top:12px">
+        <span class="small muted" id="resultCount">0 records</span>
+        <div class="row">
+          <label class="small muted" for="sortBy">Sort</label>
+          <select id="sortBy" style="min-height:34px;width:auto;padding:6px 30px 6px 10px;font-size:.78rem">
+            <option value="recent">Most recent</option>
+            <option value="oldest">Oldest first</option>
+            <option value="severity">Severity</option>
+            <option value="vials">ASV vials</option>
+          </select>
+          <button class="btn btn-sm btn-ghost" id="clearFilters" type="button">Clear</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card flush">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Case</th><th>Bite time</th><th>Patient</th><th>Location</th><th>Species</th><th>Severity</th><th>ASV</th><th>Outcome</th><th>Sync</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="caseRows"></tbody>
+        </table>
+      </div>
+      <div id="emptyCases" class="empty" style="display:none">
+        <div class="big">📁</div>
+        <h3>No matching cases</h3>
+        <p class="muted">Register a new incident or load sample data from the dashboard.</p>
+        <a class="btn btn-red" href="register-bite.html">＋ Register case</a>
+      </div>
+    </section>
+
+    <p class="footer-note no-print">Sarp Pitara · Records never leave this device unless you export them.</p>
+  </main>
+
+  <div id="modalRoot"></div>
+  <div id="printArea" class="print-only"></div>
+
+  <script src="js/app.js" defer></script>
+  <script src="js/db.js" defer></script>
+  <script src="js/triage.js" defer></script>
+  <script src="js/cases.js" defer></script>
+</body>
+</html>
